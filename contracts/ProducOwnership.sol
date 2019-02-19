@@ -16,11 +16,11 @@ contract ProductOwnership is ERC721Full, Ownable {
     struct product {
         uint productId;
         string productName;
-        uint8 productCategory;
+        string productCategory;
     }
     product[] public products;
 
-    event RegisterProduct(uint productId, string productName, uint8 productCategory);
+    event RegisterProduct(uint productId, string productName, string productCategory);
     event GiveOwnership(address currentOwner, address newOwner, uint product);
     event TakeOwnership(address currentOwner, address newOwner, uint product);
 
@@ -33,7 +33,7 @@ contract ProductOwnership is ERC721Full, Ownable {
      * @dev Register a product as the sender's belongings on blockchain
      * @param _name of the product and product category
      */
-    function registerProduct(string memory _name, uint8 _category) public {
+    function registerProduct(string memory _name, string memory _category) public {
         uint currentNumberOfProducts = products.length;
         uint rondNum = _generateRondomNumber(currentNumberOfProducts);
         super._mint(msg.sender, rondNum);
@@ -46,15 +46,17 @@ contract ProductOwnership is ERC721Full, Ownable {
         return uint(keccak256(abi.encode(_num)));
     }
 
-    function showOwnedProducts() public view returns(uint[] memory _product_id) {
+    function showOwnedProducts() public view returns(uint[] memory) {
+        uint ownedProductCount = super.balanceOf(msg.sender);
+        uint[] memory product_ids = new uint[](ownedProductCount);
         uint counter = 0;
         for(uint i=0; i < products.length; i++){
-            if(super.ownerOf(products[i].productId) == msg.sender){
-                _product_id[counter] = i;
-                counter++;
-            }
+           if(super.ownerOf(products[i].productId) == msg.sender){
+               product_ids[counter] = i;
+               counter++;
+           }
         }
-        return _product_id;
+        return product_ids;
     }
 
     /* function giveOwnership(uint _productId) external onlyOwnerOf(_productId){

@@ -37,52 +37,72 @@ App = {
     // Get the necessary contract artifact file and instantiate it with truffle-contract
     var ProductOwnershipArtifact = data;
     App.contracts.ProductOwnership = TruffleContract(ProductOwnershipArtifact);
-
     // Set the provider for our contract
     App.contracts.ProductOwnership.setProvider(App.web3Provider);
-
     // Use our contract to retrieve and mark the adopted pets
-    return App.markAdopted();
+    return App.showproducts();
   });
-
-    return App.bindEvents();
+    return App.registerNewProduct();
   },
 
-  bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
-  },
+  showproducts: function() {
+      var productOwnershipInstance;
+      // deployed(): Create an instance of MyContract that represents the default address managed by MyContract.
+      // FYI: new(): Deploy a new version of this contract to the network, getting an instance > of MyContract that represents the newly deployed instance.
+      // see https://ethereum.stackexchange.com/questions/48709/how-is-it-different-deployed-and-new
 
-  markAdopted: function(adopters, account) {
-      var adoptionInstance;
+      App.contracts.ProductOwnership.deployed().then(function(instance) {
+          productOwnershipInstance = instance;
 
-      App.contracts.Adoption.deployed().then(function(instance) {
-          adoptionInstance = instance;
+          return productOwnershipInstance.showOwnedProducts.call();
 
-          return adoptionInstance.getAdopters.call();
-      }).then(function(adopters) {
-          for (i = 0; i < adopters.length; i++) {
-              if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
-                  $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
-              }
+      }).then(function(products_ids) {
+          $('#car_list ul, #smartphone_list ul, #computer_list ul').empty();
+          for (var i = 0; i < products_ids.length; i++) {
+              productOwnershipInstance.products(i).then(productNumber =>{
+                  switch (productNumber[2]) {
+                      case "0":
+                        $('#car_list ul').append('<li>'+ productNumber[1] +'</li>')
+                          break;
+                      case "1":
+                        $('#smartphone_list ul').append('<li>'+ productNumber[1] +'</li>')
+                          break;
+                      case "2":
+                        $('#computer_list ul').append('<li>'+ productNumber[1] +'</li>')
+                          break;
+                  }
+              });
+
           }
       }).catch(function(err) {
           console.log(err.message);
       });
   },
 
-  handleAdopt: function(event) {
-    event.preventDefault();
-
-    var petId = parseInt($(event.target).data('id'));
-
-    /*
-     * Replace me...
-     */
- },
-
  registerNewProduct: function(){
+     $(document).on('click', '#regster_btn', function(event){
+         event.preventDefault();
+         let productOwnershipInstance;
+         let productName = $('#productName').val();
+         let productCategory = $('#productCategory option:selected').val();
 
- },
+         web3.eth.getAccounts(function(error, accounts) {
+             if (error) {
+                 console.log(error);
+             }
+             var account = accounts[0];
+
+             App.contracts.ProductOwnership.deployed().then(function(instance){
+                 productOwnershipInstance = instance;
+                 return productOwnershipInstance.registerProduct(productName, productCategory);
+             }).then(function(result){
+                 return App.showproducts();
+             }).catch(function(err) {
+                 console.log(err.message)
+             });
+         })
+     })
+     },
 
  giveOwnership: function() {
 
@@ -92,7 +112,7 @@ App = {
 
  },
 
- DeleteOwnership: function () {
+ deleteOwnership: function () {
 
  }
 
