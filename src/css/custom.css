@@ -1,3 +1,20 @@
 .mt-3{
     margin: 20px;
 }
+
+#productForm tr td{
+    height: 35px;
+}
+
+.product_table{
+    margin-left: 15px;
+    font-size: 1.5em;
+}
+
+.product_table tr td{
+    padding: 5px;
+}
+
+.product_table tr td:first-child{
+    width: 300px;
+}

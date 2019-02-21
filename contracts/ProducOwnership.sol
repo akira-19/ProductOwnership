@@ -59,6 +59,14 @@ contract ProductOwnership is ERC721Full, Ownable {
         return product_ids;
     }
 
+    function checkIfApproved(uint _tokenId) public view returns(bool) {
+        if (getApproved(_tokenId) == address(0) || getApproved(_tokenId) == msg.sender){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     /* function giveOwnership(uint _productId) external onlyOwnerOf(_productId){
 
     }

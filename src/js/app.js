@@ -47,30 +47,71 @@ App = {
 
   showproducts: function() {
       var productOwnershipInstance;
+      var productTokenId;
+      var productName;
+      var productCategory;
       // deployed(): Create an instance of MyContract that represents the default address managed by MyContract.
       // FYI: new(): Deploy a new version of this contract to the network, getting an instance > of MyContract that represents the newly deployed instance.
       // see https://ethereum.stackexchange.com/questions/48709/how-is-it-different-deployed-and-new
 
       App.contracts.ProductOwnership.deployed().then(function(instance) {
           productOwnershipInstance = instance;
-
           return productOwnershipInstance.showOwnedProducts.call();
-
       }).then(function(products_ids) {
-          $('#car_list ul, #smartphone_list ul, #computer_list ul').empty();
+          $('#car_list table, #smartphone_list table, #computer_list table').empty();
           for (var i = 0; i < products_ids.length; i++) {
-              productOwnershipInstance.products(i).then(productNumber =>{
-                  switch (productNumber[2]) {
+              const productId = "product-" + products_ids[i];
+              productOwnershipInstance.products(products_ids[i]).then(productNumber =>{
+                  productTokenId = productNumber[0];
+                  productName = productNumber[1];
+                  productCategory = productNumber[2];
+                  return productOwnershipInstance.checkIfApproved(productTokenId)
+              }).then(result =>{
+                  var giveButton;
+                  var deleteButton;
+                  if (result) {
+                      giveButton = "btn-secondary";
+                      deleteButton = "btn-secondary";
+                  }else{
+                      giveButton = "btn-success giveProduct";
+                      deleteButton = "btn-danger deleteProduct";
+                  }
+                  switch (productCategory) {
                       case "0":
-                        $('#car_list ul').append('<li>'+ productNumber[1] +'</li>')
+                        $('#car_list table').append("<tr id=" +productId+ "><td>"
+                        + productName
+                        +'</td>'
+                        +"<td><button class='btn "
+                        + giveButton
+                        +"' onclick='App.giveOwnership()'>Give</button></td>"
+                        +"<td><button class='btn "
+                        + deleteButton
+                        +"'>Delete</button></td></tr>");
                           break;
                       case "1":
-                        $('#smartphone_list ul').append('<li>'+ productNumber[1] +'</li>')
+                        $('#smartphone_list table').append("<tr id=" +productId+ "><td>"
+                        + productName
+                        +'</td>'
+                        +"<td><button class='btn "
+                        + giveButton
+                        +"' onclick='App.giveOwnership()'>Give</button></td>"
+                        +"<td><button class='btn "
+                        + deleteButton
+                        +"'>Delete</button></td></tr>");
                           break;
                       case "2":
-                        $('#computer_list ul').append('<li>'+ productNumber[1] +'</li>')
+                        $('#computer_list table').append("<tr id=" +productId+ "><td>"
+                        + productName
+                        +'</td>'
+                        +"<td><button class='btn "
+                        + giveButton
+                        +"' onclick='App.giveOwnership()'>Give</button></td>"
+                        +"<td><button class='btn "
+                        + deleteButton
+                        +"'>Delete</button></td></tr>");
                           break;
                   }
+
               });
 
           }
@@ -86,26 +127,48 @@ App = {
          let productName = $('#productName').val();
          let productCategory = $('#productCategory option:selected').val();
 
+         App.contracts.ProductOwnership.deployed().then(function(instance){
+             productOwnershipInstance = instance;
+             return productOwnershipInstance.registerProduct(productName, productCategory);
+         }).then(function(result){
+             return App.showproducts();
+         }).catch(function(err) {
+             console.log(err.message)
+         });
+
+     });
+     },
+
+ giveOwnership: function() {
+     $(document).off('click');
+     $(document).on('click','.giveProduct', function(event){
+         event.preventDefault();
+         var productOwnershipInstance;
+         var buttonId = $(this).parent().parent().attr("id");
+         var productId = buttonId.replace("product-", "");
+         var toAddress = prompt("Input the address you want to send the product.");
+
          web3.eth.getAccounts(function(error, accounts) {
              if (error) {
                  console.log(error);
              }
              var account = accounts[0];
 
-             App.contracts.ProductOwnership.deployed().then(function(instance){
+             App.contracts.ProductOwnership.deployed().then(instance => {
                  productOwnershipInstance = instance;
-                 return productOwnershipInstance.registerProduct(productName, productCategory);
+                 return productOwnershipInstance.products(productId);
+             }).then(productNumber => {
+                 var productTokenId = productNumber[0];
+                 return productOwnershipInstance.approve(toAddress, productTokenId);
              }).then(function(result){
+                 console.log();
                  return App.showproducts();
              }).catch(function(err) {
                  console.log(err.message)
              });
-         })
-     })
-     },
+         });
 
- giveOwnership: function() {
-
+     });
  },
 
  takeOwnership: function() {
