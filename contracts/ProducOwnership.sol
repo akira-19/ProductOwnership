@@ -20,8 +20,10 @@ contract ProductOwnership is ERC721Full, Ownable {
     }
     product[] public products;
 
+    mapping (uint => uint) tokenIdToArrayElemNum;
+
     event RegisterProduct(uint productId, string productName, string productCategory);
-    event GiveOwnership(address currentOwner, address newOwner, uint product);
+    event ApproveOwnership(address currentOwner, address indexed newOwner, uint productId, string productName);
     event TakeOwnership(address currentOwner, address newOwner, uint product);
 
     modifier onlyOwnerOf(uint _productId) {
@@ -38,6 +40,7 @@ contract ProductOwnership is ERC721Full, Ownable {
         uint rondNum = _generateRondomNumber(currentNumberOfProducts);
         super._mint(msg.sender, rondNum);
         incrementId = products.push(product(rondNum, _name, _category)) - 1;
+        tokenIdToArrayElemNum[rondNum] = incrementId;
 
         emit RegisterProduct(rondNum, _name, _category);
     }
@@ -67,11 +70,14 @@ contract ProductOwnership is ERC721Full, Ownable {
         }
     }
 
-    /* function giveOwnership(uint _productId) external onlyOwnerOf(_productId){
-
+    function approveOwnership(address _to, uint _productId) public {
+        super.approve(_to, _productId);
+        uint arrayElemNum = tokenIdToArrayElemNum[_productId];
+        product memory prd = products[arrayElemNum];
+        emit ApproveOwnership(msg.sender, _to, _productId, prd.productName);
     }
 
-    function takeOwnership() {
+    /* function takeOwnership() {
 
     } */
 

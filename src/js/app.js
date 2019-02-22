@@ -47,9 +47,7 @@ App = {
 
   showproducts: function() {
       var productOwnershipInstance;
-      var productTokenId;
-      var productName;
-      var productCategory;
+
       // deployed(): Create an instance of MyContract that represents the default address managed by MyContract.
       // FYI: new(): Deploy a new version of this contract to the network, getting an instance > of MyContract that represents the newly deployed instance.
       // see https://ethereum.stackexchange.com/questions/48709/how-is-it-different-deployed-and-new
@@ -61,6 +59,9 @@ App = {
           $('#car_list table, #smartphone_list table, #computer_list table').empty();
           for (var i = 0; i < products_ids.length; i++) {
               const productId = "product-" + products_ids[i];
+              let productTokenId;
+              let productName;
+              let productCategory;
               productOwnershipInstance.products(products_ids[i]).then(productNumber =>{
                   productTokenId = productNumber[0];
                   productName = productNumber[1];
@@ -115,10 +116,38 @@ App = {
               });
 
           }
+      }).then(() => {
+          web3.eth.getAccounts((error, accounts) => {
+              var account = accounts[0]
+              var approveEvent = productOwnershipInstance.ApproveOwnership({newOwner: account}, {fromBlock:1, toBlock:"latest"});
+              approveEvent.watch((error, result) => {
+                  $("#transaction_list").append("<tr id='"+result.args.productId+"'><td>"+result.args.currentOwner+"</td>"
+                  + "<td>"+result.args.productName+"</td>"
+                  + "<td><button class='btn btn-primary acceptOwnershipButton'>Accept</button></td>"
+                  + "<td><button class='btn btn-danger rejectOwnershipButton'>Reject</button></td></tr>");
+              });
+          });
       }).catch(function(err) {
           console.log(err.message);
       });
   },
+
+// Approval(owner, to, tokenId)
+//
+//
+//   var theDAOTransferEvent = theDAO.Transfer({}, {fromBlock: theDAOStartingBlock, toBlock: theDAOStartingBlock + 2000});
+//   console.log("address\tfrom\t\tto\tamount\tblockHash\tblockNumber\tevent\tlogIndex\ttransactionHash\ttransactionIndex");
+//   theDAOTransferEvent.watch(function(error, result){
+//     console.log(result.address + "\t" + result.args._from + "\t" + result.args._to + "\t" +
+//       result.args._amount / 1e16 + "\t" +
+//       result.blockHash + "\t" + result.blockNumber + "\t" + result.event + "\t" + result.logIndex + "\t" +
+//       result.transactionHash + "\t" + result.transactionIndex);
+//
+//   });
+
+
+
+
 
  registerNewProduct: function(){
      $(document).on('click', '#regster_btn', function(event){
@@ -159,7 +188,7 @@ App = {
                  return productOwnershipInstance.products(productId);
              }).then(productNumber => {
                  var productTokenId = productNumber[0];
-                 return productOwnershipInstance.approve(toAddress, productTokenId);
+                 return productOwnershipInstance.approveOwnership(toAddress, productTokenId);
              }).then(function(result){
                  console.log();
                  return App.showproducts();
@@ -172,7 +201,11 @@ App = {
  },
 
  takeOwnership: function() {
+     $(document).off('click');
+     $(document).on('click','.giveProduct', function(event){
+         event.preventDefault();
 
+     })
  },
 
  deleteOwnership: function () {
