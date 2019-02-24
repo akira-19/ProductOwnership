@@ -2,6 +2,15 @@
     margin: 20px;
 }
 
+#transaction_list tr td:first-child{
+    width: 350px;
+}
+
+#transaction_list tr td{
+    padding: 5px;
+}
+
+
 #productForm tr td{
     height: 35px;
 }

@@ -77,8 +77,5 @@ contract ProductOwnership is ERC721Full, Ownable {
         emit ApproveOwnership(msg.sender, _to, _productId, prd.productName);
     }
 
-    /* function takeOwnership() {
-
-    } */
 
 }

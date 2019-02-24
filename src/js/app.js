@@ -79,7 +79,7 @@ App = {
                   }
                   switch (productCategory) {
                       case "0":
-                        $('#car_list table').append("<tr id=" +productId+ "><td>"
+                        $('#car_list table').append("<tr id='" +productId+ "'><td>"
                         + productName
                         +'</td>'
                         +"<td><button class='btn "
@@ -121,32 +121,20 @@ App = {
               var account = accounts[0]
               var approveEvent = productOwnershipInstance.ApproveOwnership({newOwner: account}, {fromBlock:1, toBlock:"latest"});
               approveEvent.watch((error, result) => {
-                  $("#transaction_list").append("<tr id='"+result.args.productId+"'><td>"+result.args.currentOwner+"</td>"
-                  + "<td>"+result.args.productName+"</td>"
-                  + "<td><button class='btn btn-primary acceptOwnershipButton'>Accept</button></td>"
-                  + "<td><button class='btn btn-danger rejectOwnershipButton'>Reject</button></td></tr>");
-              });
+                  productOwnershipInstance.getApproved(result.args.productId).then(approvedTo => {
+                      if (approvedTo == account) {
+                      $("#transaction_list").append("<tr id='"+result.args.productId+"'><td>"+result.args.currentOwner+"</td>"
+                      + "<td>"+result.args.productName+"</td>"
+                      + "<td><button class='btn btn-primary acceptOwnershipButton'  onclick='App.takeOwnership()'>Accept</button></td>"
+                      + "<td><button class='btn btn-danger rejectOwnershipButton'>Reject</button></td></tr>");
+                      }
+                  });
+              })
           });
       }).catch(function(err) {
           console.log(err.message);
       });
   },
-
-// Approval(owner, to, tokenId)
-//
-//
-//   var theDAOTransferEvent = theDAO.Transfer({}, {fromBlock: theDAOStartingBlock, toBlock: theDAOStartingBlock + 2000});
-//   console.log("address\tfrom\t\tto\tamount\tblockHash\tblockNumber\tevent\tlogIndex\ttransactionHash\ttransactionIndex");
-//   theDAOTransferEvent.watch(function(error, result){
-//     console.log(result.address + "\t" + result.args._from + "\t" + result.args._to + "\t" +
-//       result.args._amount / 1e16 + "\t" +
-//       result.blockHash + "\t" + result.blockNumber + "\t" + result.event + "\t" + result.logIndex + "\t" +
-//       result.transactionHash + "\t" + result.transactionIndex);
-//
-//   });
-
-
-
 
 
  registerNewProduct: function(){
@@ -190,7 +178,6 @@ App = {
                  var productTokenId = productNumber[0];
                  return productOwnershipInstance.approveOwnership(toAddress, productTokenId);
              }).then(function(result){
-                 console.log();
                  return App.showproducts();
              }).catch(function(err) {
                  console.log(err.message)
@@ -202,9 +189,24 @@ App = {
 
  takeOwnership: function() {
      $(document).off('click');
-     $(document).on('click','.giveProduct', function(event){
+     $(document).on('click','.acceptOwnershipButton', function(event){
          event.preventDefault();
+         let tokenId = $(this).parent().parent().attr('id');
+         let fromAccount = $(this).parent().siblings().first().text();
+         web3.eth.getAccounts(function(error, accounts) {
+             if (error) {
+                 console.log(error);
+             }
+             var account = accounts[0];
 
+             App.contracts.ProductOwnership.deployed().then(instance => {
+                 return instance.safeTransferFrom(fromAccount, account, tokenId);
+             }).then(() => {
+                 return App.showproducts();
+             }).catch(function(err) {
+                 console.log(err.message)
+             });
+         });
      })
  },
 
