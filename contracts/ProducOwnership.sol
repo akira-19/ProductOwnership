@@ -54,7 +54,7 @@ contract ProductOwnership is ERC721Full, Ownable {
         uint[] memory product_ids = new uint[](ownedProductCount);
         uint counter = 0;
         for(uint i=0; i < products.length; i++){
-           if(super.ownerOf(products[i].productId) == msg.sender){
+           if(super.ownerOfProduct(products[i].productId) == msg.sender){
                product_ids[counter] = i;
                counter++;
            }
@@ -75,6 +75,10 @@ contract ProductOwnership is ERC721Full, Ownable {
         uint arrayElemNum = tokenIdToArrayElemNum[_productId];
         product memory prd = products[arrayElemNum];
         emit ApproveOwnership(msg.sender, _to, _productId, prd.productName);
+    }
+
+    function deleteOwnership(address _owner, uint256 _tokenId) public {
+        super._burn(_owner, _tokenId);
     }
 
 

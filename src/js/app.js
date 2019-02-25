@@ -54,7 +54,7 @@ App = {
 
       App.contracts.ProductOwnership.deployed().then(function(instance) {
           productOwnershipInstance = instance;
-          return productOwnershipInstance.showOwnedProducts.call();
+          return productOwnershipInstance.showOwnedProducts();
       }).then(function(products_ids) {
           $('#car_list table, #smartphone_list table, #computer_list table').empty();
           for (var i = 0; i < products_ids.length; i++) {
@@ -79,7 +79,9 @@ App = {
                   }
                   switch (productCategory) {
                       case "0":
-                        $('#car_list table').append("<tr id='" +productId+ "'><td>"
+                        $('#car_list table').append("<tr id='" + productId
+                        + "' name='" + productTokenId
+                        + "'><td>"
                         + productName
                         +'</td>'
                         +"<td><button class='btn "
@@ -87,7 +89,7 @@ App = {
                         +"' onclick='App.giveOwnership()'>Give</button></td>"
                         +"<td><button class='btn "
                         + deleteButton
-                        +"'>Delete</button></td></tr>");
+                        +"' onclick='App.deleteOwnership()'>Delete</button></td></tr>");
                           break;
                       case "1":
                         $('#smartphone_list table').append("<tr id=" +productId+ "><td>"
@@ -98,7 +100,7 @@ App = {
                         +"' onclick='App.giveOwnership()'>Give</button></td>"
                         +"<td><button class='btn "
                         + deleteButton
-                        +"'>Delete</button></td></tr>");
+                        +"' onclick='App.deleteOwnership()'>Delete</button></td></tr>");
                           break;
                       case "2":
                         $('#computer_list table').append("<tr id=" +productId+ "><td>"
@@ -109,7 +111,7 @@ App = {
                         +"' onclick='App.giveOwnership()'>Give</button></td>"
                         +"<td><button class='btn "
                         + deleteButton
-                        +"'>Delete</button></td></tr>");
+                        +"' onclick='App.deleteOwnership()'>Delete</button></td></tr>");
                           break;
                   }
 
@@ -211,7 +213,27 @@ App = {
  },
 
  deleteOwnership: function () {
+     $(document).off('click');
+     $(document).on('click','.deleteProduct', function(event){
+         event.preventDefault();
+         let productId = $(this).parent().parent().attr("name");
+         let productOwnershipInstance;
+         web3.eth.getAccounts(function(error, accounts) {
+             if (error) {
+                 console.log(error);
+             }
+             var account = accounts[0];
 
+             App.contracts.ProductOwnership.deployed().then(instance => {
+                 productOwnershipInstance = instance;
+                 return productOwnershipInstance.deleteOwnership(account, productId);
+             }).then(() => {
+                 return App.showproducts();
+             }).catch(function(err) {
+                 console.log(err.message)
+             });
+         });
+     })
  }
 
 };
