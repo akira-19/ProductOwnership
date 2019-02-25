@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Ownership management</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">First ERC721 Dapp</a>
+        </div><!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="Navber">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" onclick="$('#top-page').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Top</a></li>
+            <li><a href="#" onclick="$('#products-list').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Products List</a></li>
+            <li><a href="#" onclick="$('#register-product').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Register Product</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+
+
+
+    <div class="wrapper">
+        <div id="top-page">
+            <div class="title-text">
+                <h2>Product Ownership</h3>
+                <p>You can manage your own products</p>
+            </div>
+        </div>
+
+        <div id="products-list">
+            <h2>Products List</h2>
+            <div id="car_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Car</h3>
+                    <table class="product_table">
+
+                    </table>
+                </div>
+            </div>
+
+            <div id="electronics_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Electronics</h3>
+                    <table class="product_table">
+
+                    </table>
+                </div>
+            </div>
+
+            <div id="appliance_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Appliance</h3>
+                    <table class="product_table">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="register-product">
+            <div class="jumbotron">
+                <div class="notification">
+                    <h3>New transaction</h3>
+                    <div>
+                        <table class="table" id="transaction_list">
+                            <thead>
+                                <tr>
+                                    <td>Product Name</td>
+                                    <td>From</td>
+                                    <td>Accept</td>
+                                    <td>Reject</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="register-product">
+                    <h3>Register new product</h3>
+                    <table id="productForm">
+                        <tr>
+                            <td>Product Name:</td>
+                            <td><input type="text" name="productName" id="productName"></td>
+                        </tr>
+                        <tr>
+                            <td>Category:</td>
+                            <td>
+                                <select class="" name="productCategory" id="productCategory">
+                                    <option value="0">Car</option>
+                                    <option value="1">Electronics</option>
+                                    <option value="2">Appliance</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button id="regster_btn" class="btn btn-primary">Register</button></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+            </div>
+        </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/animatescroll.js">
+    </script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/javascript">
+
+    </script>
+  </body>
+</html>

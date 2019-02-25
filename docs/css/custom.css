@@ -1,0 +1,145 @@
+/* header navigation style */
+/* navbar background color */
+.navbar-default {
+  background-color: rgb(40, 40, 40);
+  border-color: rgb(40, 40, 40);
+}
+/* navbar text color */
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff!important;
+}
+
+.navbar-default .navbar-nav > li > a :visited{
+  color: #ffffff;
+}
+/* navbar text color when hover,focus */
+.navbar-default .navbar-nav > li > a:hover {
+  color: rgb(140, 140, 140)!important;
+  background-color: transparent;
+}
+
+/* navbar brand name */
+.navbar-header a{
+  color: #ffffff !important;
+}
+
+/* navbar brand name when hover */
+.navbar-header a:hover{
+  color: rgb(140, 140, 140) !important;
+}
+
+
+
+/* top page */
+
+#top-page{
+    height: 800px;
+    width: 100%;
+    background: black url("../images/background.jpg") no-repeat fixed center;
+}
+.title-text{
+    width: 500px;
+    margin: auto;
+    text-align: center;
+    padding-top: 300px;
+    color: white;
+}
+.title-text h2{
+    font-size: 4em;
+}
+.title-text p{
+    font-size: 1.5em;
+}
+
+/* product list page */
+#products-list{
+    padding-top: 60px;
+    min-height: 800px;
+    width: 100%;
+    background: white;
+}
+
+
+.mt-3{
+    margin: 20px;
+}
+
+#transaction_list tr td:first-child{
+    width: 350px;
+}
+
+#transaction_list tr td{
+    padding: 5px;
+}
+
+
+#productForm tr td{
+    height: 35px;
+}
+
+.product_table{
+    width: 700px;
+    margin-left: 15px;
+    font-size: 1.5em;
+    margin: auto;
+}
+
+
+.product_table tr td:nth-child(2){
+    width: 600px;
+    font-weight: bold;
+}
+
+.column-position h3{
+    margin-left: 20px;
+}
+
+#products-list{
+    margin-left: 170px;
+}
+
+#car_list .product_table tr td:first-child{
+    width: 5px;
+    background: orange;
+}
+
+#electronics_list .product_table tr td:first-child{
+    width: 5px;
+    background: skyblue;
+}
+
+#appliance_list .product_table tr td:first-child{
+    width: 5px;
+    background: palegreen;
+}
+
+.product_table tr td{
+    padding: 5px;
+    background: #EEE;
+    border-bottom: 3px solid white;
+}
+
+/* product register page */
+#register-product .jumbotron{
+    padding-left: 170px;
+}
+
+.notification {
+    display: none;
+}
+
+#transaction_list{
+    width: 800px;
+}
+
+#transaction_list tr td:first-child{
+    width: 300px;
+}
+
+#transaction_list tr td:nth-child(2){
+    width: 350px;
+}
+
+#transaction_list thead{
+    font-weight: bold;
+}
