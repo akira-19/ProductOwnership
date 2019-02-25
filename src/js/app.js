@@ -56,7 +56,7 @@ App = {
           productOwnershipInstance = instance;
           return productOwnershipInstance.showOwnedProducts();
       }).then(function(products_ids) {
-          $('#car_list table, #smartphone_list table, #computer_list table').empty();
+          $('#car_list table, #electronics_list table, #appliance_list table').empty();
           for (var i = 0; i < products_ids.length; i++) {
               const productId = "product-" + products_ids[i];
               let productTokenId;
@@ -81,7 +81,7 @@ App = {
                       case "0":
                         $('#car_list table').append("<tr id='" + productId
                         + "' name='" + productTokenId
-                        + "'><td>"
+                        + "'><td></td><td>"
                         + productName
                         +'</td>'
                         +"<td><button class='btn "
@@ -92,7 +92,8 @@ App = {
                         +"' onclick='App.deleteOwnership()'>Delete</button></td></tr>");
                           break;
                       case "1":
-                        $('#smartphone_list table').append("<tr id=" +productId+ "><td>"
+                        $('#electronics_list table').append("<tr id=" +productId
+                        + " name='" + productTokenId+ "'><td></td><td>"
                         + productName
                         +'</td>'
                         +"<td><button class='btn "
@@ -103,7 +104,8 @@ App = {
                         +"' onclick='App.deleteOwnership()'>Delete</button></td></tr>");
                           break;
                       case "2":
-                        $('#computer_list table').append("<tr id=" +productId+ "><td>"
+                        $('#appliance_list table').append("<tr id=" +productId
+                        + " name='" + productTokenId + "'><td></td><td>"
                         + productName
                         +'</td>'
                         +"<td><button class='btn "
@@ -125,11 +127,14 @@ App = {
               approveEvent.watch((error, result) => {
                   productOwnershipInstance.getApproved(result.args.productId).then(approvedTo => {
                       if (approvedTo == account) {
-                      $("#transaction_list").append("<tr id='"+result.args.productId+"'><td>"+result.args.currentOwner+"</td>"
-                      + "<td>"+result.args.productName+"</td>"
+                      $(".notification").css("display", "block");
+                      $("#transaction_list tbody").append("<tr id='"+result.args.productId+"'><td>"+result.args.productName+"</td>"
+                      + "<td>"+result.args.currentOwner+"</td>"
                       + "<td><button class='btn btn-primary acceptOwnershipButton'  onclick='App.takeOwnership()'>Accept</button></td>"
                       + "<td><button class='btn btn-danger rejectOwnershipButton' onclick='App.rejectOwnership()'>Reject</button></td></tr>");
                       }
+
+
                   });
               })
           });

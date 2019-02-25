@@ -19,93 +19,116 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-sm-8 col-sm-push-2">
-            <h1 class="text-center">Ownership</h1>
-            <hr/>
-            <br/>
-          </div>
-        </div>
+      <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">First ERC721 Dapp</a>
+        </div><!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="Navber">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" onclick="$('#top-page').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Top</a></li>
+            <li><a href="#" onclick="$('#products-list').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Products List</a></li>
+            <li><a href="#" onclick="$('#register-product').animatescroll({scrollSpeed:1000,easing:'easeInOutBack'});">Register Product</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
 
 
-        <div class="jumbotron">
-            <h2>New transaction</h2>
-            <div>
-                <table id="transaction_list">
-                    <tr>
-                        <td>From</td>
-                        <td>Product Name</td>
-                        <td>Accept</td>
-                        <td>Reject</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="">
-                <h3>Register new product</h3>
-                <table id="productForm">
-                    <tr>
-                        <td>Product Name:</td>
-                        <td><input type="text" name="productName" id="productName"></td>
-                    </tr>
-                    <tr>
-                        <td>Category:</td>
-                        <td>
-                            <select class="" name="productCategory" id="productCategory">
-                                <option value="0">Car</option>
-                                <option value="1">Smartphone</option>
-                                <option value="2">Computer</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button id="regster_btn" class="btn btn-primary">Register</button></td>
-                    </tr>
-                </table>
 
-            </div>
-
-        </div>
-
-        <div id="car_list" class="row mt-3 bg-success">
-            <div class="col-md-8">
-                <h3>Car</h3>
-                <table class="product_table">
-
-                </table>
+    <div class="wrapper">
+        <div id="top-page">
+            <div class="title-text">
+                <h2>Product Ownership</h3>
+                <p>You can manage your own products</p>
             </div>
         </div>
 
-        <div id="smartphone_list" class="row mt-3 bg-info">
-            <div class="col-md-8">
-                <h3>Smartphone</h3>
-                <table class="product_table">
+        <div id="products-list">
+            <h2>Products List</h2>
+            <div id="car_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Car</h3>
+                    <table class="product_table">
 
-                </table>
+                    </table>
+                </div>
+            </div>
+
+            <div id="electronics_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Electronics</h3>
+                    <table class="product_table">
+
+                    </table>
+                </div>
+            </div>
+
+            <div id="appliance_list" class="row mt-3">
+                <div class="col-md-8 column-position">
+                    <h3>Appliance</h3>
+                    <table class="product_table">
+
+                    </table>
+                </div>
             </div>
         </div>
+        <div id="register-product">
+            <div class="jumbotron">
+                <div class="notification">
+                    <h3>New transaction</h3>
+                    <div>
+                        <table class="table" id="transaction_list">
+                            <thead>
+                                <tr>
+                                    <td>Product Name</td>
+                                    <td>From</td>
+                                    <td>Accept</td>
+                                    <td>Reject</td>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-        <div id="computer_list" class="row mt-3 bg-warning">
-            <div class="col-md-8">
-                <h3>Comupter</h3>
-                <table class="product_table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="register-product">
+                    <h3>Register new product</h3>
+                    <table id="productForm">
+                        <tr>
+                            <td>Product Name:</td>
+                            <td><input type="text" name="productName" id="productName"></td>
+                        </tr>
+                        <tr>
+                            <td>Category:</td>
+                            <td>
+                                <select class="" name="productCategory" id="productCategory">
+                                    <option value="0">Car</option>
+                                    <option value="1">Electronics</option>
+                                    <option value="2">Appliance</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button id="regster_btn" class="btn btn-primary">Register</button></td>
+                        </tr>
+                    </table>
 
-                </table>
+                </div>
+
+            </div>
+
             </div>
         </div>
-
-
-    </div>
-
-
-
-
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/animatescroll.js">
+    </script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
