@@ -128,7 +128,7 @@ App = {
                       $("#transaction_list").append("<tr id='"+result.args.productId+"'><td>"+result.args.currentOwner+"</td>"
                       + "<td>"+result.args.productName+"</td>"
                       + "<td><button class='btn btn-primary acceptOwnershipButton'  onclick='App.takeOwnership()'>Accept</button></td>"
-                      + "<td><button class='btn btn-danger rejectOwnershipButton'>Reject</button></td></tr>");
+                      + "<td><button class='btn btn-danger rejectOwnershipButton' onclick='App.rejectOwnership()'>Reject</button></td></tr>");
                       }
                   });
               })
@@ -203,7 +203,7 @@ App = {
 
              App.contracts.ProductOwnership.deployed().then(instance => {
                  return instance.safeTransferFrom(fromAccount, account, tokenId);
-             }).then(() => {
+             }).then((result) => {
                  return App.showproducts();
              }).catch(function(err) {
                  console.log(err.message)
@@ -227,14 +227,33 @@ App = {
              App.contracts.ProductOwnership.deployed().then(instance => {
                  productOwnershipInstance = instance;
                  return productOwnershipInstance.deleteOwnership(account, productId);
-             }).then(() => {
+             }).then((result) => {
                  return App.showproducts();
              }).catch(function(err) {
                  console.log(err.message)
              });
          });
+     });
+ },
+
+ rejectOwnership: function(){
+     $(document).off('click');
+     $(document).on('click','.rejectOwnershipButton', function(event){
+         event.preventDefault();
+         let tokenId = $(this).parent().parent().attr('id');
+         let fromAccount = $(this).parent().siblings().first().text();
+
+         App.contracts.ProductOwnership.deployed().then(instance => {
+             return instance.clearApproval(tokenId);
+         }).then((result) => {
+             return App.showproducts();
+         }).catch(function(err) {
+             console.log(err.message)
+         });
      })
  }
+
+
 
 };
 
