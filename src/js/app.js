@@ -1,6 +1,6 @@
 // オブジェクトリテラル
 App = {
-  web3Provider: null,
+  web3Provider: "https://ropsten.infura.io/v3/841d5eaaca754b389a7a3c1c8a0bd60e",
   contracts: {},
 
   init: async function() {
