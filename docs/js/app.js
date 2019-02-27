@@ -1,6 +1,6 @@
 // オブジェクトリテラル
 App = {
-  web3Provider: "https://ropsten.infura.io/v3/841d5eaaca754b389a7a3c1c8a0bd60e",
+  web3Provider: null,
   contracts: {},
 
   init: async function() {
@@ -25,7 +25,7 @@ App = {
   }
   // If no injected web3 instance is detected, fall back to Ganache
   else {
-    App.web3Provider = new Web3.providers.HttpProvider(App.web3Provider);
+    App.web3Provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/841d5eaaca754b389a7a3c1c8a0bd60e");
   }
   web3 = new Web3(App.web3Provider);
 
@@ -33,7 +33,7 @@ App = {
   },
 
   initContract: function() {
-      $.getJSON('../../build/contracts/ProductOwnership.json', function(data) {
+      $.getJSON('../build/contracts/ProductOwnership.json', function(data) {
     // Get the necessary contract artifact file and instantiate it with truffle-contract
     var ProductOwnershipArtifact = data;
     App.contracts.ProductOwnership = TruffleContract(ProductOwnershipArtifact);
