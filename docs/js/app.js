@@ -33,7 +33,7 @@ App = {
   },
 
   initContract: function() {
-      $.getJSON('../build/contracts/ProductOwnership.json', function(data) {
+      $.getJSON('ProductOwnership.json', function(data) {
     // Get the necessary contract artifact file and instantiate it with truffle-contract
     var ProductOwnershipArtifact = data;
     App.contracts.ProductOwnership = TruffleContract(ProductOwnershipArtifact);
