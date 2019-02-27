@@ -1,3 +1,18 @@
+// Import libraries we need.
+import { default as Web3} from 'web3';
+import { default as contract } from 'truffle-contract'
+import $ from "jquery";
+
+// Import our contract artifacts and turn them into usable abstractions.
+import productOwnership_artifacts from 'ProductOwnership.json'
+
+// MetaCoin is our usable abstraction, which we'll use through the code below.
+var ProductOwnershipArtifact = productOwnership_artifacts;
+
+
+
+
+
 // オブジェクトリテラル
 App = {
   web3Provider: null,
@@ -25,7 +40,7 @@ App = {
   }
   // If no injected web3 instance is detected, fall back to Ganache
   else {
-    App.web3Provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/841d5eaaca754b389a7a3c1c8a0bd60e");
+    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
   }
   web3 = new Web3(App.web3Provider);
 
@@ -33,16 +48,13 @@ App = {
   },
 
   initContract: function() {
-      $.getJSON('ProductOwnership.json', function(data) {
+
     // Get the necessary contract artifact file and instantiate it with truffle-contract
-    var ProductOwnershipArtifact = data;
     App.contracts.ProductOwnership = TruffleContract(ProductOwnershipArtifact);
     // Set the provider for our contract
     App.contracts.ProductOwnership.setProvider(App.web3Provider);
     // Use our contract to retrieve and mark the adopted pets
     return App.showproducts();
-  });
-    return App.registerNewProduct();
   },
 
   showproducts: function() {
