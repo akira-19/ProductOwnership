@@ -25,35 +25,25 @@ App = {
   }
   // If no injected web3 instance is detected, fall back to Ganache
   else {
-    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    App.web3Provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/841d5eaaca754b389a7a3c1c8a0bd60e');
   }
   web3 = new Web3(App.web3Provider);
 
     return App.initContract();
   },
 
-  initContract: async function() {
-    let response = await axios.get("ProductOwnership.json");
-    let artifact = response.data;
-    await dapp.init(artifact.abi, artifact.networks["3"].address);
-    let netId = await dapp.network();
-    this.writable = !!dapp.account && netId == "3";
-    if (location.hash) {
-      this.redirect = true;
-      let key = location.hash.substring(1);
-      this.text = await dapp.text(key);
-      if (this.text) location.href = this.redirectTo;
-    } else {
-      if (!this.writable) {
-        setTimeout(() =>
-        alert(
-          "You need have the MetaMask browser extension installed"
-          + " and connect to ropsten to register url."),
-          100);
-      }
-    }
-    this.ready = true;
+  initContract: function() {
+      $.getJSON('ProductOwnership.json', function(data) {
+    // Get the necessary contract artifact file and instantiate it with truffle-contract
+    var AdoptionArtifact = data;
+    App.contracts.Adoption = TruffleContract(AdoptionArtifact);
+
+    // Set the provider for our contract
+    App.contracts.Adoption.setProvider(App.web3Provider);
+
+    // Use our contract to retrieve and mark the adopted pets
     return App.showproducts();
+  });
   },
 
   showproducts: function() {
