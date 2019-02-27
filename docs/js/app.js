@@ -1,13 +1,3 @@
-// Import our contract artifacts and turn them into usable abstractions.
-import productOwnership_artifacts from 'ProductOwnership.json';
-
-// MetaCoin is our usable abstraction, which we'll use through the code below.
-var ProductOwnershipArtifact = productOwnership_artifacts;
-
-
-
-
-
 // オブジェクトリテラル
 App = {
   web3Provider: null,
