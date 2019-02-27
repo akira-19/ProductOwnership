@@ -44,6 +44,7 @@ App = {
     // Use our contract to retrieve and mark the adopted pets
     return App.showproducts();
   });
+    return App.registerNewProduct();
   },
 
   showproducts: function() {
