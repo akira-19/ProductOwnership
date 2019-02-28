@@ -34,6 +34,7 @@ When you want to take the ownership, click the "Accept" button.
 MIT
 
 
-# Dependency
+## Dependency
 Solidity version: 0.5.0  
 Truffle version: 5.0.1
+Web3.js version: 1.0.0
